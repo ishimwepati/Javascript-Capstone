@@ -18,26 +18,26 @@ const showMeals = (data) => {
         const heartIcon = document.createElement('i');
         heartIcon.classList.add('far', 'fa-heart', 'heart-icon');
 
-        const commentButton = document.createElement('button'); 
+        const commentButton = document.createElement('button');
         commentButton.classList.add('comment-button');
         commentButton.textContent = 'Comment';
-        commentButton.style.display = 'block'; 
+        commentButton.style.display = 'block';
+
         itemContainer.appendChild(itemImg); 
         itemContainer.appendChild(desc);
         itemContainer.appendChild(heartIcon);
         itemContainer.appendChild(commentButton); 
 
-       
         commentButton.addEventListener('click', async () => {
-            const mealDetails = await getMealDetails(item.idMeal); 
-            openDetailsPopup(mealDetails); 
+            const mealDetails = await getMealDetails(item.idMeal);
+            openDetailsPopup(mealDetails, item.idMeal); // Pass mealId here
         });
-
+        
         itemBox.appendChild(itemContainer);
     });
 };
 
-const openDetailsPopup = (mealDetails) => {
+const openDetailsPopup = (mealDetails, mealId) => {
     const popup = document.createElement('div');
     popup.classList.add('popup');
 
@@ -59,12 +59,15 @@ const openDetailsPopup = (mealDetails) => {
     popup.appendChild(closeButton); 
     popup.appendChild(mealInfo);
 
-    const commentForm = createCommentForm();
+    const commentForm = createCommentForm(mealId);
     popup.appendChild(commentForm);
 
     document.body.appendChild(popup);
 };
-const createCommentForm = () => {
+
+
+const createCommentForm = (mealId) => {
+
     const form = document.createElement('form');
     form.classList.add('comment-form');
 
@@ -95,24 +98,41 @@ const createCommentForm = () => {
         event.preventDefault();
         const userName = nameInput.value;
         const userComment = commentInput.value;
-        handleCommentSubmit(userName, userComment);
+        handleCommentSubmit(userName, userComment, mealId); // Pass mealId here
         form.reset();
     });
 
     return form;
 };
 
-const handleCommentSubmit = (userName, userComment) => {
-    // You can implement the logic to handle comment submission here.
-    // For example, you can create a new comment element and append it to the popup.
-    const commentElement = document.createElement('div');
-    commentElement.classList.add('comment');
-    commentElement.innerHTML = `
-        <strong>${userName}</strong>
-        <p>${userComment}</p>
-    `;
-    const mealInfo = document.querySelector('.meal-info'); // Adjust the selector accordingly
-    mealInfo.appendChild(commentElement);
+
+
+const handleCommentSubmit = async (userName, userComment, mealId) => {
+    try {
+        const commentData = {
+            item_id: mealId,
+            username: userName,
+            comment: userComment
+        };
+
+        const response = await fetch('https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/tQwE3IU59z3JaJmDVQ7q/comments', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(commentData)
+        });
+
+        if (!response.ok) {
+            throw new Error('Error sending comment data');
+        }
+
+        // Handle successful response here if needed
+
+    } catch (error) {
+        console.error('Error sending comment:', error);
+    }
 };
+
 
 export default showMeals;

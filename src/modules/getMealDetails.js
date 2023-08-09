@@ -7,7 +7,7 @@ const getMealDetails = async (mealId) => {
         }
 
         const data = await response.json();
-        return data.meals[0]; 
+        return data.meals[0];
     } catch (error) {
         console.error('Error fetching meal details:', error);
         throw error;
