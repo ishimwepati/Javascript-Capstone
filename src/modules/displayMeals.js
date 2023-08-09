@@ -60,21 +60,22 @@ const openDetailsPopup = async (mealDetails, mealId) => {
     const commentForm = createCommentForm(mealId);
     popup.appendChild(commentForm);
 
-    // Create a placeholder comments section
-    const commentsSection = document.createElement('div');
-    commentsSection.classList.add('comments-section');
-    popup.appendChild(commentsSection);
-
-    document.body.appendChild(popup);
-
-    // Fetch comments from the API
+    // Fetch existing comments from the API and display them
     try {
         const mealComments = await fetchCommentsForMeal(mealId);
-        updateCommentsSection(commentsSection, mealComments);
+        
+        // Create a comments section with comments and counter
+        const commentsSection = createCommentsSection(mealComments);
+        
+        // Append the comments section to the popup
+        popup.appendChild(commentsSection);
+        
+        document.body.appendChild(popup);
     } catch (error) {
         console.error('Error fetching comments:', error);
     }
 };
+
 
 
 const fetchCommentsForMeal = async (mealId) => {
@@ -97,11 +98,17 @@ const fetchCommentsForMeal = async (mealId) => {
         throw error;
     }
 };
+
 const createCommentsSection = (comments) => {
+    const commentsContainer = document.createElement('div');
+    commentsContainer.classList.add('comments-container');
+
     const commentsSection = document.createElement('div');
     commentsSection.classList.add('comments-section');
 
-    if (comments.length > 0) {
+    const commentCount = comments.length;
+
+    if (commentCount > 0) {
         const commentsList = document.createElement('ul');
         commentsList.classList.add('comments-list');
 
@@ -121,8 +128,14 @@ const createCommentsSection = (comments) => {
         commentsSection.appendChild(noCommentsMessage);
     }
 
-    return commentsSection;
+    const commentCounter = document.createElement('p');
+    commentCounter.textContent = `Comments: ${commentCount}`;
+    commentsContainer.appendChild(commentsSection);
+    commentsContainer.appendChild(commentCounter);
+
+    return commentsContainer;
 };
+
 
 const createCommentForm = (mealId) => {
 
@@ -193,13 +206,15 @@ const handleCommentSubmit = async (userName, userComment, mealId) => {
 };
 
 
-const updateCommentsSection = (newCommentsSection) => {
-    const existingCommentsSection = document.querySelector('.comments-section');
-    if (existingCommentsSection) {
-        existingCommentsSection.innerHTML = ''; // Clear the existing section
-        existingCommentsSection.appendChild(newCommentsSection); // Append the new section
+
+const updateCommentsSection = (newCommentsContainer) => {
+    const existingCommentsContainer = document.querySelector('.comments-container');
+    if (existingCommentsContainer) {
+        existingCommentsContainer.parentNode.replaceChild(newCommentsContainer, existingCommentsContainer);
     }
 };
+
+
 
 
 
