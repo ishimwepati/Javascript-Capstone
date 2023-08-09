@@ -29,10 +29,11 @@ const showMeals = async (data) => {
         desc.textContent = item.strMeal;
 
         const heartIcon = document.createElement('i');
-        heartIcon.classList.add('far', 'fa-heart', 'heart-icon');
+        heartIcon.classList.add('far', 'fa-heart', 'heart-icon','custom-heart-class');
         heartIcon.dataset.itemId = item.idMeal;
 
         const likesElement = document.createElement('p');
+        likesElement.classList.add('likes-count');
         const matchingLike = likesData.find(like => like.item_id === item.idMeal);
         const likesCount = matchingLike ? matchingLike.likes : 0;
         likesElement.textContent = `Likes: ${likesCount}`;
@@ -148,11 +149,11 @@ const createCommentsSection = (comments) => {
 
         const commentCounter = document.createElement('p');
             commentCounter.classList.add('comment-counter');
-            commentCounter.textContent = `Comments: ${commentCount}`;
+            commentCounter.textContent = `Number of Comments : ${commentCount}`;
 
             commentsSection.appendChild(commentCounter);
 
-    updateCommentCounter(commentCount);
+       updateCommentCounter(commentCount);
 
         reversedComments.forEach(comment => {
             const commentItem = document.createElement('li');
@@ -163,11 +164,11 @@ const createCommentsSection = (comments) => {
 
             const commentAuthor = document.createElement('span');
             commentAuthor.classList.add('comment-author');
-            commentAuthor.textContent = comment.username;
+            commentAuthor.textContent = ` by ${comment.username}`;
 
             const commentDateTime = document.createElement('span');
             commentDateTime.classList.add('comment-datetime');
-            commentDateTime.textContent = comment.creation_date; 
+            commentDateTime.textContent = `Posted on ${comment.creation_date}`; 
             
             commentMeta.appendChild(commentDateTime);
             commentMeta.appendChild(commentAuthor);
@@ -202,16 +203,18 @@ const createCommentForm = (mealId) => {
     form.classList.add('comment-form');
 
     const nameLabel = document.createElement('label');
-    nameLabel.textContent = 'Your Name:';
+    nameLabel.textContent = '';
     const nameInput = document.createElement('input');
     nameInput.type = 'text';
     nameInput.name = 'user-name';
+    nameInput.placeholder = 'Enter your name';
     nameInput.required = true;
 
     const commentLabel = document.createElement('label');
-    commentLabel.textContent = 'Your Comment:';
+    commentLabel.textContent = '';
     const commentInput = document.createElement('textarea');
     commentInput.name = 'user-comment';
+    commentInput.placeholder = 'Enter your Comment';
     commentInput.required = true;
 
     const submitButton = document.createElement('button');

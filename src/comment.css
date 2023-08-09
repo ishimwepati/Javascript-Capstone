@@ -1,6 +1,7 @@
 
 .comment-button {
     display: block;
+    margin: 0 auto;
     margin-top: 10px;
     background-color: #007bff;
     color: white;
@@ -9,7 +10,7 @@
     padding: 8px 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    margin-left: 50%;
+    
 }
 
 .comment-button:hover {
@@ -46,12 +47,14 @@
     font-size: 24px;
     margin-bottom: 10px;
     text-decoration: solid;
+    text-align: center;
 }
 
 .popup img {
     max-width: 100%;
     height: auto;
     margin-bottom: 10px;
+    border-radius: 3%;
 }
 
 .popup p {
@@ -66,20 +69,17 @@
     margin-top: 20px;
 }
 
-.comment-form label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
 .comment-form input,
 .comment-form textarea {
-    width: 100%;
+    width: 60%;
     padding: 8px;
-    border: 1px solid #ccc;
+    border: 2px solid #ccc;
     border-radius: 4px;
-    margin-bottom: 10px;
     resize: vertical;
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 20px;
+
 }
 
 .comment-form button {
@@ -89,16 +89,28 @@
     border-radius: 4px;
     padding: 10px 20px;
     cursor: pointer;
+    display: block;
+    margin: 0 auto;
 }
 
 .comment-form button:hover {
-    background-color: #0056b3;
+    background-color: #040a11;
 }
 
 .comment{
-    background-color: #dde7ef;
+    background-color: #f0f4f8;
+    width: 80%;
     border-radius: 10px;
     padding-top: 3%;
+    display: block;
+    margin: 0 auto;
+}
+.comment-counter{
+    color: black;
+    font-weight: bold;
+}
+li {
+    list-style:  none;
 }
 .comment-datetime{
     font-size: 20px;
@@ -106,8 +118,10 @@
 }
 .comment-text{
     color: rgb(2, 27, 19);
-    padding-left: 10%;   
+    padding-left: 10%; 
+    padding-bottom: 2%;
 }
+
 .comment-author{
     font-size: 20px;
     color: #0056b3;

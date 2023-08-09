@@ -28,23 +28,50 @@ nav a:hover {
     margin-right: 200px;
 }
 
+#home-icon{
+    text-align: center;
+    font-size: 30px;
+}
 .items-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    grid-gap: 120px;
-    margin: 10% 15%;
+    grid-gap: 40px;
+    margin: 3% 10% 5% 8%;
+
 }
 
 .item-images{
-    width: 350px;
+    width: 220px;
     border-radius: 5%;
+    box-shadow: 10px 10px 90px 30px rgba(20, 20, 20, 2);
+       
 }
 
 .item-p{
-    display: inline-block;
-    margin-right: 10px;
+    font-size: 20px; 
+    text-align: center;
+    color: #080707;
+    font-weight: bold;
+}
+.inline-elements .custom-heart-class,
+.inline-elements .likes-count {
+  display: inline-block;
+  vertical-align: middle;
 }
 
+.custom-heart-class{
+    color: #0056b3;
+    font-size: 20px;
+    text-align: center;
+    display: block;
+}
+.likes-count {
+    font-size: 14px;
+    color: #007bff;
+    font-weight: bold; 
+    text-align: center; 
+  }
+  
 footer {
     background-color: #f0f0f0;
     text-align: center;
