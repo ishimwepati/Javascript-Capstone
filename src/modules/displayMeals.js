@@ -38,7 +38,7 @@ const showMeals = (data) => {
 
         commentButton.addEventListener('click', async () => {
             const mealDetails = await getMealDetails(item.idMeal);
-            openDetailsPopup(mealDetails, item.idMeal); // Pass mealId here
+            openDetailsPopup(mealDetails, item.idMeal); 
         });
 
         itemBox.appendChild(itemContainer);
@@ -75,11 +75,10 @@ const openDetailsPopup = async (mealDetails, mealId) => {
     popup.appendChild(mealInfo);
     popup.appendChild(commentForm);
 
-    // Fetch existing comments from the API and display them
     try {
         const mealComments = await fetchCommentsForMeal(mealId);
         const commentsSection = createCommentsSection(mealComments);
-        popup.appendChild(commentsSection); // Append the comments section if available
+        popup.appendChild(commentsSection);
     } catch (error) {
         console.error('Error fetching comments:', error);
     }
@@ -96,7 +95,7 @@ const fetchCommentsForMeal = async (mealId) => {
 
         if (!response.ok) {
             console.error('Error response:', response.status, await response.text());
-            // Handle the error by returning an empty array
+            
             return [];
         }
 
@@ -108,29 +107,43 @@ const fetchCommentsForMeal = async (mealId) => {
     }
 };
 
-
 const createCommentsSection = (comments) => {
     const commentsSection = document.createElement('div');
     commentsSection.classList.add('comments-section');
 
     const commentCount = comments.length;
 
-    const commentCounter = document.createElement('p');
-    commentCounter.classList.add('comment-counter');
-    commentCounter.textContent = `Comments: ${commentCount}`;
-
-    commentsSection.appendChild(commentCounter);
-
     if (commentCount > 0) {
         const commentsList = document.createElement('ul');
         commentsList.classList.add('comments-list');
 
-        comments.forEach(comment => {
+        const reversedComments = comments.slice().reverse();
+
+        reversedComments.forEach(comment => {
             const commentItem = document.createElement('li');
-            commentItem.innerHTML = `
-                <span>${comment.username} (${comment.creation_date}):</span>
-                <p>${comment.comment}</p>
-            `;
+            commentItem.classList.add('comment');
+
+            const commentMeta = document.createElement('div');
+            commentMeta.classList.add('comment-meta');
+
+            const commentAuthor = document.createElement('span');
+            commentAuthor.classList.add('comment-author');
+            commentAuthor.textContent = comment.username;
+
+            const commentDateTime = document.createElement('span');
+            commentDateTime.classList.add('comment-datetime');
+            commentDateTime.textContent = comment.creation_date; 
+
+            commentMeta.appendChild(commentAuthor);
+            commentMeta.appendChild(commentDateTime);
+
+            const commentText = document.createElement('p');
+            commentText.classList.add('comment-text');
+            commentText.textContent = comment.comment;
+
+            commentItem.appendChild(commentMeta);
+            commentItem.appendChild(commentText);
+
             commentsList.appendChild(commentItem);
         });
 
@@ -141,8 +154,19 @@ const createCommentsSection = (comments) => {
         commentsSection.appendChild(noCommentsMessage);
     }
 
+    const commentCounter = document.createElement('p');
+    commentCounter.classList.add('comment-counter');
+    commentCounter.textContent = `Comments: ${commentCount}`;
+
+    commentsSection.appendChild(commentCounter);
+
+    updateCommentCounter(commentCount);
+
     return commentsSection;
 };
+
+
+
 
 const createCommentForm = (mealId) => {
 
@@ -176,14 +200,12 @@ const createCommentForm = (mealId) => {
         event.preventDefault();
         const userName = nameInput.value;
         const userComment = commentInput.value;
-        handleCommentSubmit(userName, userComment, mealId); // Pass mealId here
+        handleCommentSubmit(userName, userComment, mealId); 
         form.reset();
     });
 
     return form;
 };
-
-// ...
 
 const handleCommentSubmit = async (userName, userComment, mealId) => {
     try {
