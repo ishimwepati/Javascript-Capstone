@@ -119,6 +119,14 @@ const createCommentsSection = (comments) => {
 
         const reversedComments = comments.slice().reverse();
 
+        const commentCounter = document.createElement('p');
+            commentCounter.classList.add('comment-counter');
+            commentCounter.textContent = `Comments: ${commentCount}`;
+
+            commentsSection.appendChild(commentCounter);
+
+    updateCommentCounter(commentCount);
+
         reversedComments.forEach(comment => {
             const commentItem = document.createElement('li');
             commentItem.classList.add('comment');
@@ -133,10 +141,10 @@ const createCommentsSection = (comments) => {
             const commentDateTime = document.createElement('span');
             commentDateTime.classList.add('comment-datetime');
             commentDateTime.textContent = comment.creation_date; 
-
-            commentMeta.appendChild(commentAuthor);
+            
             commentMeta.appendChild(commentDateTime);
-
+            commentMeta.appendChild(commentAuthor);
+            
             const commentText = document.createElement('p');
             commentText.classList.add('comment-text');
             commentText.textContent = comment.comment;
@@ -154,13 +162,6 @@ const createCommentsSection = (comments) => {
         commentsSection.appendChild(noCommentsMessage);
     }
 
-    const commentCounter = document.createElement('p');
-    commentCounter.classList.add('comment-counter');
-    commentCounter.textContent = `Comments: ${commentCount}`;
-
-    commentsSection.appendChild(commentCounter);
-
-    updateCommentCounter(commentCount);
 
     return commentsSection;
 };
