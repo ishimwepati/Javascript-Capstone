@@ -36,45 +36,6 @@ const showMeals = (data) => {
         itemBox.appendChild(itemContainer);
     });
 };
-const openDetailsPopup = async (mealDetails, mealId) => {
-    const popup = document.createElement('div');
-    popup.classList.add('popup');
-
-    const closeButton = document.createElement('i');
-    closeButton.classList.add('popup-close', 'fas', 'fa-times'); 
-    
-    closeButton.addEventListener('click', () => {
-        document.body.removeChild(popup);
-    });
-
-    const mealInfo = document.createElement('div');
-    mealInfo.innerHTML = `
-        <h2>${mealDetails.strMeal}</h2>
-        <img src="${mealDetails.strMealThumb}" alt="${mealDetails.strMeal}" class="popup-image">
-        <p>${mealDetails.strInstructions}</p>
-    `;
-
-    popup.appendChild(closeButton); 
-    popup.appendChild(mealInfo);
-    
-    const commentForm = createCommentForm(mealId);
-    popup.appendChild(commentForm);
-
-    // Fetch existing comments from the API and display them
-    try {
-        const mealComments = await fetchCommentsForMeal(mealId);
-        
-        // Create a comments section with comments and counter
-        const commentsSection = createCommentsSection(mealComments);
-        
-        // Append the comments section to the popup
-        popup.appendChild(commentsSection);
-        
-        document.body.appendChild(popup);
-    } catch (error) {
-        console.error('Error fetching comments:', error);
-    }
-};
 
 
 
@@ -136,7 +97,6 @@ const createCommentsSection = (comments) => {
     return commentsContainer;
 };
 
-
 const createCommentForm = (mealId) => {
 
     const form = document.createElement('form');
@@ -176,6 +136,8 @@ const createCommentForm = (mealId) => {
     return form;
 };
 
+// ...
+
 const handleCommentSubmit = async (userName, userComment, mealId) => {
     try {
         const commentData = {
@@ -196,15 +158,20 @@ const handleCommentSubmit = async (userName, userComment, mealId) => {
             throw new Error('Error sending comment data');
         }
 
+        // Fetch updated comments after submitting a comment
         const mealComments = await fetchCommentsForMeal(mealId);
+        
+        // Update the comments section with the new comments
         const commentsSection = createCommentsSection(mealComments);
-        updateCommentsSection(commentsSection);
+        const popup = document.querySelector('.popup');
+        updateCommentsSection(popup, commentsSection);
 
     } catch (error) {
         console.error('Error sending comment:', error);
     }
 };
 
+// ...
 
 
 const updateCommentsSection = (newCommentsContainer) => {
