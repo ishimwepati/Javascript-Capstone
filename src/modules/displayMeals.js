@@ -36,7 +36,42 @@ const showMeals = (data) => {
         itemBox.appendChild(itemContainer);
     });
 };
+const openDetailsPopup = async (mealDetails, mealId) => {
+    const popup = document.createElement('div');
+    popup.classList.add('popup');
 
+    const closeButton = document.createElement('i');
+    closeButton.classList.add('popup-close', 'fas', 'fa-times');
+    
+    closeButton.addEventListener('click', () => {
+        document.body.removeChild(popup);
+    });
+
+    const mealInfo = document.createElement('div');
+    mealInfo.innerHTML = `
+        <h2>${mealDetails.strMeal}</h2>
+        <img src="${mealDetails.strMealThumb}" alt="${mealDetails.strMeal}" class="popup-image">
+        <p>${mealDetails.strInstructions}</p>
+    `;
+
+    popup.appendChild(closeButton);
+    popup.appendChild(mealInfo);
+
+    const commentForm = createCommentForm(mealId);
+    popup.appendChild(commentForm);
+
+    // Display the popup first
+    document.body.appendChild(popup);
+
+    // Fetch existing comments from the API and display them
+    try {
+        const mealComments = await fetchCommentsForMeal(mealId);
+        const commentsSection = createCommentsSection(mealComments);
+        popup.appendChild(commentsSection); // Append the comments section if available
+    } catch (error) {
+        console.error('Error fetching comments:', error);
+    }
+};
 
 
 const fetchCommentsForMeal = async (mealId) => {
