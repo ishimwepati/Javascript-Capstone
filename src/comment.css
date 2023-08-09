@@ -95,4 +95,21 @@
     background-color: #0056b3;
 }
 
- 
+.comment{
+    background-color: #dde7ef;
+    border-radius: 10px;
+    padding-top: 3%;
+}
+.comment-datetime{
+    font-size: 20px;
+    padding-left: 10%;   
+}
+.comment-text{
+    color: rgb(2, 27, 19);
+    padding-left: 10%;   
+}
+.comment-author{
+    font-size: 20px;
+    color: #0056b3;
+    padding-left: 10%;
+}

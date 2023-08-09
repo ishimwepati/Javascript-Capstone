@@ -158,7 +158,7 @@ const createCommentsSection = (comments) => {
         commentsSection.appendChild(commentsList);
     } else {
         const noCommentsMessage = document.createElement('p');
-        noCommentsMessage.textContent = 'No comments yet.';
+        noCommentsMessage.textContent = 'Be the first one Leave a Comment';
         commentsSection.appendChild(noCommentsMessage);
     }
 
