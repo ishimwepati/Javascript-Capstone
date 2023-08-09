@@ -1,4 +1,4 @@
-import getMealDetails from './getMealDetails';
+import getMealDetails from './getMealDetails'; 
 
 const updateCommentCounter = (commentCount) => {
     const commentCounter = document.querySelector('.comment-counter');
@@ -31,14 +31,14 @@ const showMeals = (data) => {
         commentButton.textContent = 'Comment';
         commentButton.style.display = 'block';
 
-        itemContainer.appendChild(itemImg);
+        itemContainer.appendChild(itemImg); 
         itemContainer.appendChild(desc);
         itemContainer.appendChild(heartIcon);
-        itemContainer.appendChild(commentButton);
+        itemContainer.appendChild(commentButton); 
 
         commentButton.addEventListener('click', async () => {
             const mealDetails = await getMealDetails(item.idMeal);
-            openDetailsPopup(mealDetails, item.idMeal);
+            openDetailsPopup(mealDetails, item.idMeal); // Pass mealId here
         });
 
         itemBox.appendChild(itemContainer);
@@ -48,9 +48,10 @@ const showMeals = (data) => {
 const openDetailsPopup = async (mealDetails, mealId) => {
     const popup = document.createElement('div');
     popup.classList.add('popup');
-
+    
     const closeButton = document.createElement('i');
     closeButton.classList.add('popup-close', 'fas', 'fa-times');
+    
     closeButton.addEventListener('click', () => {
         document.body.removeChild(popup);
     });
@@ -62,19 +63,22 @@ const openDetailsPopup = async (mealDetails, mealId) => {
         <p>${mealDetails.strInstructions}</p>
     `;
 
-    popup.appendChild(closeButton);
-    popup.appendChild(mealInfo);
-
     const commentForm = createCommentForm(mealId);
+    popup.appendChild(mealInfo);
     popup.appendChild(commentForm);
 
-    document.body.appendChild(popup);
+    // Fetch existing comments from the API and display them
+    try {
+        const mealComments = await fetchCommentsForMeal(mealId);
+        const commentsSection = createCommentsSection(mealComments);
+        popup.appendChild(commentsSection); // Append the comments section if available
+    } catch (error) {
+        console.error('Error fetching comments:', error);
+    }
 
-    const mealComments = await fetchCommentsForMeal(mealId);
-    const commentsSection = createCommentsSection(mealComments);
-    popup.appendChild(commentsSection);
-    updateCommentCounter(mealComments.length);
+    document.body.appendChild(popup);
 };
+
 
 const fetchCommentsForMeal = async (mealId) => {
     const apiUrl = `https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/VT6MgkCI6GHRm8y0ZkMt/comments?item_id=${mealId}`;
@@ -84,6 +88,7 @@ const fetchCommentsForMeal = async (mealId) => {
 
         if (!response.ok) {
             console.error('Error response:', response.status, await response.text());
+            // Handle the error by returning an empty array
             return [];
         }
 
@@ -95,11 +100,20 @@ const fetchCommentsForMeal = async (mealId) => {
     }
 };
 
+
 const createCommentsSection = (comments) => {
     const commentsSection = document.createElement('div');
     commentsSection.classList.add('comments-section');
 
-    if (comments.length > 0) {
+    const commentCount = comments.length;
+
+    const commentCounter = document.createElement('p');
+    commentCounter.classList.add('comment-counter');
+    commentCounter.textContent = `Comments: ${commentCount}`;
+
+    commentsSection.appendChild(commentCounter);
+
+    if (commentCount > 0) {
         const commentsList = document.createElement('ul');
         commentsList.classList.add('comments-list');
 
@@ -118,12 +132,6 @@ const createCommentsSection = (comments) => {
         noCommentsMessage.textContent = 'No comments yet.';
         commentsSection.appendChild(noCommentsMessage);
     }
-
-    const commentCounter = document.createElement('p');
-    commentCounter.textContent = `Comments: ${comments.length}`;
-    commentsSection.appendChild(commentCounter);
-
-    updateCommentCounter(comments.length);
 
     return commentsSection;
 };
@@ -205,12 +213,5 @@ const updateCommentsSection = (newCommentsSection) => {
         existingCommentsSection.replaceWith(newCommentsSection);
     }
 };
-
-
-
-
-
-
-
 
 export default showMeals;
