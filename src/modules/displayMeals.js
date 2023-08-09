@@ -59,7 +59,7 @@ const openDetailsPopup = async (mealDetails, mealId) => {
 
     popup.appendChild(closeButton); 
     popup.appendChild(mealInfo);
-
+    
     const commentForm = createCommentForm(mealId);
     popup.appendChild(commentForm);
 
@@ -69,23 +69,26 @@ const openDetailsPopup = async (mealDetails, mealId) => {
     document.body.appendChild(popup);
 };
 
-const fetchCommentsForMeal = async (mealId) => {
-    // Temporarily use static data for testing
-    const staticComments = [
-        {
-            "comment": "This is nice!",
-            "creation_date": "2021-01-10",
-            "username": "John"
-        },
-        {
-            "comment": "Great content!",
-            "creation_date": "2021-02-10",
-            "username": "Jane"
-        }
-    ];
 
-    return staticComments;
-}
+const fetchCommentsForMeal = async (mealId) => {
+    const apiUrl = `https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/tQwE3IU59z3JaJmDVQ7q/comments?item_id=${mealId}`;
+
+    try {
+        const response = await fetch(apiUrl);
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching comments:', error);
+        throw error;
+    }
+};
+
+
 
 
 const createCommentsSection = (comments) => {
