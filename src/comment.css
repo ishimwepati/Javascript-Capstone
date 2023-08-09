@@ -109,3 +109,12 @@
 .comment p {
     margin: 0;
 }
+.no-comments-message {
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out; /* Add transition */
+}
+
+.no-comments-message.hidden {
+    opacity: 0;
+    pointer-events: none; /* Disable interactions when hidden */
+}

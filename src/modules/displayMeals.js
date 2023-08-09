@@ -37,8 +37,6 @@ const showMeals = (data) => {
     });
 };
 const openDetailsPopup = async (mealDetails, mealId) => {
-    const mealComments = await fetchCommentsForMeal(mealId);
-
     const popup = document.createElement('div');
     popup.classList.add('popup');
 
@@ -48,7 +46,6 @@ const openDetailsPopup = async (mealDetails, mealId) => {
     closeButton.addEventListener('click', () => {
         document.body.removeChild(popup);
     });
-
 
     const mealInfo = document.createElement('div');
     mealInfo.innerHTML = `
@@ -63,20 +60,33 @@ const openDetailsPopup = async (mealDetails, mealId) => {
     const commentForm = createCommentForm(mealId);
     popup.appendChild(commentForm);
 
-    const commentsSection = createCommentsSection(mealComments);
+    // Create a placeholder comments section
+    const commentsSection = document.createElement('div');
+    commentsSection.classList.add('comments-section');
     popup.appendChild(commentsSection);
 
     document.body.appendChild(popup);
+
+    // Fetch comments from the API
+    try {
+        const mealComments = await fetchCommentsForMeal(mealId);
+        updateCommentsSection(commentsSection, mealComments);
+    } catch (error) {
+        console.error('Error fetching comments:', error);
+    }
 };
 
 
 const fetchCommentsForMeal = async (mealId) => {
-    const apiUrl = `https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/tQwE3IU59z3JaJmDVQ7q/comments?item_id=${mealId}`;
+    const apiUrl = `https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/VT6MgkCI6GHRm8y0ZkMt/comments?item_id=${mealId}`;
+    console.log('API URL:', apiUrl);
 
     try {
+        console.log('Fetching comments for meal ID:', mealId);
         const response = await fetch(apiUrl);
 
         if (!response.ok) {
+            console.error('Error response:', response.status, await response.text());
             throw new Error('Network response was not ok');
         }
 
@@ -87,10 +97,6 @@ const fetchCommentsForMeal = async (mealId) => {
         throw error;
     }
 };
-
-
-
-
 const createCommentsSection = (comments) => {
     const commentsSection = document.createElement('div');
     commentsSection.classList.add('comments-section');
@@ -102,7 +108,7 @@ const createCommentsSection = (comments) => {
         comments.forEach(comment => {
             const commentItem = document.createElement('li');
             commentItem.innerHTML = `
-                <span>${comment.username} (${comment.date}):</span>
+                <span>${comment.username} (${comment.creation_date}):</span>
                 <p>${comment.comment}</p>
             `;
             commentsList.appendChild(commentItem);
@@ -157,7 +163,6 @@ const createCommentForm = (mealId) => {
     return form;
 };
 
-
 const handleCommentSubmit = async (userName, userComment, mealId) => {
     try {
         const commentData = {
@@ -166,7 +171,7 @@ const handleCommentSubmit = async (userName, userComment, mealId) => {
             comment: userComment
         };
 
-        const response = await fetch('https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/tQwE3IU59z3JaJmDVQ7q/comments', {
+        const response = await fetch('https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/VT6MgkCI6GHRm8y0ZkMt/comments', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -187,12 +192,15 @@ const handleCommentSubmit = async (userName, userComment, mealId) => {
     }
 };
 
+
 const updateCommentsSection = (newCommentsSection) => {
     const existingCommentsSection = document.querySelector('.comments-section');
     if (existingCommentsSection) {
-        existingCommentsSection.parentNode.replaceChild(newCommentsSection, existingCommentsSection);
+        existingCommentsSection.innerHTML = ''; // Clear the existing section
+        existingCommentsSection.appendChild(newCommentsSection); // Append the new section
     }
 };
+
 
 
 
