@@ -1,7 +1,11 @@
 import getMealDetails from './getMealDetails'; 
+import addLike from "./addLikes";
+import getLikes from "./getLikes";
+const app_id = 'tQwE3IU59z3JaJmDVQ7q';
 
-const showMeals = (data) => {
+const showMeals = async (data) => {
     const itemBox = document.getElementById('items-box');
+    const likesData = await getLikes();
 
     data.meals.forEach(item => {
         const itemContainer = document.createElement('div'); 
@@ -17,6 +21,27 @@ const showMeals = (data) => {
 
         const heartIcon = document.createElement('i');
         heartIcon.classList.add('far', 'fa-heart', 'heart-icon');
+        heartIcon.dataset.itemId = item.idMeal;
+
+        const likesElement = document.createElement('p');
+        const matchingLike = likesData.find(like => like.item_id === item.idMeal);
+        const likesCount = matchingLike ? matchingLike.likes : 0;
+        likesElement.textContent = `Likes: ${likesCount}`;
+
+        heartIcon.addEventListener('click', async () => {
+            try {
+                await addLike(app_id, item.idMeal);
+                if (matchingLike) {
+                    matchingLike.likes++;
+                } else {
+                    likesData.push({ item_id: item.idMeal, likes: 1 });
+                }
+                likesElement.textContent = `Likes: ${matchingLike ? matchingLike.likes : likesCount + 1}`;
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+
 
         const commentButton = document.createElement('button'); 
         commentButton.classList.add('comment-button');
@@ -25,6 +50,7 @@ const showMeals = (data) => {
         itemContainer.appendChild(itemImg); 
         itemContainer.appendChild(desc);
         itemContainer.appendChild(heartIcon);
+        itemContainer.appendChild(likesElement);
         itemContainer.appendChild(commentButton); 
 
        
