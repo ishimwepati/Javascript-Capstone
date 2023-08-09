@@ -1,10 +1,18 @@
-import getMealDetails from './getMealDetails'; 
+import getMealDetails from './getMealDetails';
+
+const updateCommentCounter = (commentCount) => {
+    const commentCounter = document.querySelector('.comment-counter');
+
+    if (commentCounter) {
+        commentCounter.textContent = `Comments: ${commentCount}`;
+    }
+};
 
 const showMeals = (data) => {
     const itemBox = document.getElementById('items-box');
 
     data.meals.forEach(item => {
-        const itemContainer = document.createElement('div'); 
+        const itemContainer = document.createElement('div');
 
         const itemImg = document.createElement('img');
         itemImg.alt = 'seafood-image';
@@ -23,26 +31,26 @@ const showMeals = (data) => {
         commentButton.textContent = 'Comment';
         commentButton.style.display = 'block';
 
-        itemContainer.appendChild(itemImg); 
+        itemContainer.appendChild(itemImg);
         itemContainer.appendChild(desc);
         itemContainer.appendChild(heartIcon);
-        itemContainer.appendChild(commentButton); 
+        itemContainer.appendChild(commentButton);
 
         commentButton.addEventListener('click', async () => {
             const mealDetails = await getMealDetails(item.idMeal);
-            openDetailsPopup(mealDetails, item.idMeal); // Pass mealId here
+            openDetailsPopup(mealDetails, item.idMeal);
         });
-        
+
         itemBox.appendChild(itemContainer);
     });
 };
+
 const openDetailsPopup = async (mealDetails, mealId) => {
     const popup = document.createElement('div');
     popup.classList.add('popup');
 
     const closeButton = document.createElement('i');
     closeButton.classList.add('popup-close', 'fas', 'fa-times');
-    
     closeButton.addEventListener('click', () => {
         document.body.removeChild(popup);
     });
@@ -60,31 +68,23 @@ const openDetailsPopup = async (mealDetails, mealId) => {
     const commentForm = createCommentForm(mealId);
     popup.appendChild(commentForm);
 
-    // Display the popup first
     document.body.appendChild(popup);
 
-    // Fetch existing comments from the API and display them
-    try {
-        const mealComments = await fetchCommentsForMeal(mealId);
-        const commentsSection = createCommentsSection(mealComments);
-        popup.appendChild(commentsSection); // Append the comments section if available
-    } catch (error) {
-        console.error('Error fetching comments:', error);
-    }
+    const mealComments = await fetchCommentsForMeal(mealId);
+    const commentsSection = createCommentsSection(mealComments);
+    popup.appendChild(commentsSection);
+    updateCommentCounter(mealComments.length);
 };
-
 
 const fetchCommentsForMeal = async (mealId) => {
     const apiUrl = `https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/VT6MgkCI6GHRm8y0ZkMt/comments?item_id=${mealId}`;
-    console.log('API URL:', apiUrl);
 
     try {
-        console.log('Fetching comments for meal ID:', mealId);
         const response = await fetch(apiUrl);
 
         if (!response.ok) {
             console.error('Error response:', response.status, await response.text());
-            throw new Error('Network response was not ok');
+            return [];
         }
 
         const data = await response.json();
@@ -96,15 +96,10 @@ const fetchCommentsForMeal = async (mealId) => {
 };
 
 const createCommentsSection = (comments) => {
-    const commentsContainer = document.createElement('div');
-    commentsContainer.classList.add('comments-container');
-
     const commentsSection = document.createElement('div');
     commentsSection.classList.add('comments-section');
 
-    const commentCount = comments.length;
-
-    if (commentCount > 0) {
+    if (comments.length > 0) {
         const commentsList = document.createElement('ul');
         commentsList.classList.add('comments-list');
 
@@ -125,11 +120,12 @@ const createCommentsSection = (comments) => {
     }
 
     const commentCounter = document.createElement('p');
-    commentCounter.textContent = `Comments: ${commentCount}`;
-    commentsContainer.appendChild(commentsSection);
-    commentsContainer.appendChild(commentCounter);
+    commentCounter.textContent = `Comments: ${comments.length}`;
+    commentsSection.appendChild(commentCounter);
 
-    return commentsContainer;
+    updateCommentCounter(comments.length);
+
+    return commentsSection;
 };
 
 const createCommentForm = (mealId) => {
@@ -193,28 +189,24 @@ const handleCommentSubmit = async (userName, userComment, mealId) => {
             throw new Error('Error sending comment data');
         }
 
-        // Fetch updated comments after submitting a comment
         const mealComments = await fetchCommentsForMeal(mealId);
-        
-        // Update the comments section with the new comments
         const commentsSection = createCommentsSection(mealComments);
-        const popup = document.querySelector('.popup');
-        updateCommentsSection(popup, commentsSection);
+        updateCommentsSection(commentsSection);
 
     } catch (error) {
         console.error('Error sending comment:', error);
     }
 };
 
-// ...
 
-
-const updateCommentsSection = (newCommentsContainer) => {
-    const existingCommentsContainer = document.querySelector('.comments-container');
-    if (existingCommentsContainer) {
-        existingCommentsContainer.parentNode.replaceChild(newCommentsContainer, existingCommentsContainer);
+const updateCommentsSection = (newCommentsSection) => {
+    const existingCommentsSection = document.querySelector('.comments-section');
+    if (existingCommentsSection) {
+        existingCommentsSection.replaceWith(newCommentsSection);
     }
 };
+
+
 
 
 
