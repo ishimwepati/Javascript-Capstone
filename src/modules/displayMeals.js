@@ -45,16 +45,21 @@ const showMeals = (data) => {
     });
 };
 
+
 const openDetailsPopup = async (mealDetails, mealId) => {
     const popup = document.createElement('div');
     popup.classList.add('popup');
-    
+
     const closeButton = document.createElement('i');
     closeButton.classList.add('popup-close', 'fas', 'fa-times');
     
     closeButton.addEventListener('click', () => {
         document.body.removeChild(popup);
     });
+
+    const closeContainer = document.createElement('div');
+    closeContainer.classList.add('close-container');
+    closeContainer.appendChild(closeButton);
 
     const mealInfo = document.createElement('div');
     mealInfo.innerHTML = `
@@ -64,6 +69,9 @@ const openDetailsPopup = async (mealDetails, mealId) => {
     `;
 
     const commentForm = createCommentForm(mealId);
+
+    closeContainer.appendChild(closeButton);
+    popup.appendChild(closeContainer);
     popup.appendChild(mealInfo);
     popup.appendChild(commentForm);
 
