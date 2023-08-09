@@ -36,8 +36,9 @@ const showMeals = (data) => {
         itemBox.appendChild(itemContainer);
     });
 };
+const openDetailsPopup = async (mealDetails, mealId) => {
+    const mealComments = await fetchCommentsForMeal(mealId);
 
-const openDetailsPopup = (mealDetails, mealId) => {
     const popup = document.createElement('div');
     popup.classList.add('popup');
 
@@ -62,9 +63,57 @@ const openDetailsPopup = (mealDetails, mealId) => {
     const commentForm = createCommentForm(mealId);
     popup.appendChild(commentForm);
 
+    const commentsSection = createCommentsSection(mealComments);
+    popup.appendChild(commentsSection);
+
     document.body.appendChild(popup);
 };
 
+const fetchCommentsForMeal = async (mealId) => {
+    // Temporarily use static data for testing
+    const staticComments = [
+        {
+            "comment": "This is nice!",
+            "creation_date": "2021-01-10",
+            "username": "John"
+        },
+        {
+            "comment": "Great content!",
+            "creation_date": "2021-02-10",
+            "username": "Jane"
+        }
+    ];
+
+    return staticComments;
+}
+
+
+const createCommentsSection = (comments) => {
+    const commentsSection = document.createElement('div');
+    commentsSection.classList.add('comments-section');
+
+    if (comments.length > 0) {
+        const commentsList = document.createElement('ul');
+        commentsList.classList.add('comments-list');
+
+        comments.forEach(comment => {
+            const commentItem = document.createElement('li');
+            commentItem.innerHTML = `
+                <span>${comment.username} (${comment.date}):</span>
+                <p>${comment.comment}</p>
+            `;
+            commentsList.appendChild(commentItem);
+        });
+
+        commentsSection.appendChild(commentsList);
+    } else {
+        const noCommentsMessage = document.createElement('p');
+        noCommentsMessage.textContent = 'No comments yet.';
+        commentsSection.appendChild(noCommentsMessage);
+    }
+
+    return commentsSection;
+};
 
 const createCommentForm = (mealId) => {
 
@@ -106,7 +155,6 @@ const createCommentForm = (mealId) => {
 };
 
 
-
 const handleCommentSubmit = async (userName, userComment, mealId) => {
     try {
         const commentData = {
@@ -127,12 +175,22 @@ const handleCommentSubmit = async (userName, userComment, mealId) => {
             throw new Error('Error sending comment data');
         }
 
-        // Handle successful response here if needed
+        const mealComments = await fetchCommentsForMeal(mealId);
+        const commentsSection = createCommentsSection(mealComments);
+        updateCommentsSection(commentsSection);
 
     } catch (error) {
         console.error('Error sending comment:', error);
     }
 };
+
+const updateCommentsSection = (newCommentsSection) => {
+    const existingCommentsSection = document.querySelector('.comments-section');
+    if (existingCommentsSection) {
+        existingCommentsSection.parentNode.replaceChild(newCommentsSection, existingCommentsSection);
+    }
+};
+
 
 
 export default showMeals;
