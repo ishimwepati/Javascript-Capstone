@@ -1,38 +1,44 @@
 {
-  "name": "webpack-demo",
+  "name": "capstone-js",
   "version": "1.0.0",
   "description": "",
   "private": true,
-  "homepage": "https://github.com/Xghayor/Leaderboard-App/",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "build": "webpack",
     "start": "webpack serve --open",
-    "deploy": "npm run build && gh-pages -d dist"
+    "watch": "webpack --watch"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/plugin-transform-modules-commonjs": "^7.22.5",
+    "@testing-library/dom": "^9.3.1",
+    "@testing-library/jest-dom": "^5.17.0",
     "babel-eslint": "^10.1.0",
     "css-loader": "^6.8.1",
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-plugin-import": "^2.28.0",
-    "gh-pages": "^5.0.0",
+    "eslint-plugin-import": "^2.27.5",
     "hint": "^7.1.10",
     "html-webpack-plugin": "^5.5.3",
+    "jest": "^29.6.1",
+    "jest-environment-jsdom": "^29.6.1",
+    "jsdom": "^22.1.0",
     "style-loader": "^3.3.3",
     "stylelint": "^13.13.1",
     "stylelint-config-standard": "^21.0.0",
     "stylelint-csstree-validator": "^1.9.0",
     "stylelint-scss": "^3.21.0",
-    "webpack": "^5.4.0",
-    "webpack-cli": "^4.2.0",
+    "webpack": "^5.88.1",
+    "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1"
   },
   "dependencies": {
-    "lodash": "^4.17.20"
+    "lodash": "^4.17.21"
   },
-  "main": "webpack.config.js"
+  "jest": {
+    "testEnvironment": "jsdom"
+  }
 }
