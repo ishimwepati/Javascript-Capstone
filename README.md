@@ -33,7 +33,7 @@
 - [📝 License](#license)
 
 <!-- INTRO -->
-# 📖 LeaderBoard <a name="about-project"></a>
+# 📖 JavaScript Capstone Project <a name="about-project"></a>
 
 > The Restaurant Meal Showcase Web App as our Javascript Capstone Project is like a delightful adventure where you can discover a wide array of scrumptious restaurant meals. Imagine a place with a charming and easy-to-use design that lets you effortlessly browse through different dishes. 
 
