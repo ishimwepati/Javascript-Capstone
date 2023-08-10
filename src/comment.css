@@ -10,7 +10,6 @@
     padding: 8px 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    
 }
 
 .comment-button:hover {
@@ -26,7 +25,7 @@
     background-color: #fff;
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    max-width: 80%;
+    max-width: 100%;
     max-height: 80%;
     overflow-y: auto;
 }
@@ -52,13 +51,15 @@
 
 .popup img {
     max-width: 100%;
-    height: auto;
+    height: 200px;
     margin-bottom: 10px;
     border-radius: 3%;
+    display: block; 
+    margin: 0 auto; 
 }
 
 .popup p {
-    font-size: 16px;
+    font-size: 12px;
     line-height: 1.5;
     text-align: justify;
 }
@@ -71,9 +72,10 @@
 
 .comment-form input,
 .comment-form textarea {
-    width: 60%;
+    width: 50%;
+    height: 5%;
     padding: 8px;
-    border: 2px solid #ccc;
+    border: 1.5px solid #ccc;
     border-radius: 4px;
     resize: vertical;
     display: block;
@@ -99,11 +101,14 @@
 
 .comment{
     background-color: #f0f4f8;
-    width: 80%;
+    width: 90%;
+    height: auto;
     border-radius: 10px;
-    padding-top: 3%;
+    padding-top: 1%;
     display: block;
     margin: 0 auto;
+    margin-bottom: 10px;
+    margin-right: 8%;
 }
 .comment-counter{
     color: black;
@@ -112,18 +117,36 @@
 li {
     list-style:  none;
 }
-.comment-datetime{
-    font-size: 20px;
-    padding-left: 10%;   
-}
-.comment-text{
-    color: rgb(2, 27, 19);
-    padding-left: 10%; 
-    padding-bottom: 2%;
+.comment-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
-.comment-author{
-    font-size: 20px;
+.comment-meta {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1%;
+    flex: 1;
+}
+
+.comment-author {
+    font-size: 15px;
     color: #0056b3;
-    padding-left: 10%;
+    margin-bottom: 1%;
+    margin-left: 3%;
+}
+
+.comment-datetime {
+    margin-left: 5%;
+    font-size: 15px;
+    color: #999;
+}
+
+.comment-text {
+    font-size: 15px;
+    color: rgb(2, 27, 19);
+    flex: 0.8; 
+    margin-bottom: 1%;
+    padding-left: -5%;
 }

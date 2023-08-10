@@ -96,23 +96,24 @@ const openDetailsPopup = async (mealDetails, mealId) => {
         <p>${mealDetails.strInstructions}</p>
     `;
 
-    const commentForm = createCommentForm(mealId);
-
-    closeContainer.appendChild(closeButton);
-    popup.appendChild(closeContainer);
-    popup.appendChild(mealInfo);
-    popup.appendChild(commentForm);
-
     try {
         const mealComments = await fetchCommentsForMeal(mealId);
         const commentsSection = createCommentsSection(mealComments);
-        popup.appendChild(commentsSection);
+        popup.appendChild(mealInfo);
+        popup.appendChild(commentsSection); // Move this line before the commentForm
+
+        const commentForm = createCommentForm(mealId);
+        popup.appendChild(commentForm); // Append the comment form after the commentsSection
     } catch (error) {
         console.error('Error fetching comments:', error);
     }
 
+    closeContainer.appendChild(closeButton);
+    popup.appendChild(closeContainer);
+
     document.body.appendChild(popup);
 };
+
 
 
 const fetchCommentsForMeal = async (mealId) => {
@@ -159,6 +160,9 @@ const createCommentsSection = (comments) => {
             const commentItem = document.createElement('li');
             commentItem.classList.add('comment');
 
+            const commentContainer = document.createElement('div'); // Create a container for the comment content
+            commentContainer.classList.add('comment-container');
+
             const commentMeta = document.createElement('div');
             commentMeta.classList.add('comment-meta');
 
@@ -169,19 +173,23 @@ const createCommentsSection = (comments) => {
             const commentDateTime = document.createElement('span');
             commentDateTime.classList.add('comment-datetime');
             commentDateTime.textContent = `Posted on ${comment.creation_date}`; 
-            
+
             commentMeta.appendChild(commentDateTime);
             commentMeta.appendChild(commentAuthor);
-            
-            const commentText = document.createElement('p');
+
+            const commentText = document.createElement('span');
             commentText.classList.add('comment-text');
             commentText.textContent = comment.comment;
 
-            commentItem.appendChild(commentMeta);
-            commentItem.appendChild(commentText);
+            commentContainer.appendChild(commentMeta);
+            commentContainer.appendChild(commentText);
+
+            commentItem.appendChild(commentContainer); // Append the container instead of individual elements
 
             commentsList.appendChild(commentItem);
         });
+
+
 
         commentsSection.appendChild(commentsList);
     } else {
