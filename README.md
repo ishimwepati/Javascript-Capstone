@@ -85,7 +85,7 @@ You can show your love for a meal by simply clicking a heart icon, just like sha
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- LIVE DEMO -->
+<!-- VIDEO DEMO -->
 
 ## 🚀 Demo Video <a name="live-demo" target="_blank"></a>
 
