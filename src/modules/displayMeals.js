@@ -2,16 +2,9 @@ import getMealDetails from './getMealDetails';
 import addLike from './addLikes';
 import getLikes from './getLikes';
 import homeCounter from './homeCounter';
+import commentsCounter from './commentsCounter';
 
 const appId = 'tQwE3IU59z3JaJmDVQ7q';
-
-const updateCommentCounter = (commentCount) => {
-  const commentCounter = document.querySelector('.comment-counter');
-
-  if (commentCounter) {
-    commentCounter.textContent = `Comments: ${commentCount}`;
-  }
-};
 
 const createCommentsSection = (comments) => {
   const commentsSection = document.createElement('div');
@@ -31,7 +24,7 @@ const createCommentsSection = (comments) => {
 
     commentsSection.appendChild(commentCounter);
 
-    updateCommentCounter(commentCount);
+    commentsCounter(commentCount);
 
     reversedComments.forEach((comment) => {
       const commentItem = document.createElement('li');
@@ -270,4 +263,4 @@ const showMeals = async (data) => {
   homeCounter();
 };
 
-export { showMeals, updateCommentCounter };
+export default showMeals;

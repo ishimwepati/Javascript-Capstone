@@ -1,6 +1,6 @@
 import './style.css';
 import './comment.css';
-import { showMeals } from './modules/displayMeals';
+import showMeals from './modules/displayMeals';
 import getMeals from './modules/getMeals';
 
 document.addEventListener('DOMContentLoaded', async () => {
