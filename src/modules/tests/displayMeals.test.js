@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom/extend-expect';
 import { screen } from '@testing-library/dom';
-import { updateCommentCounter } from '../displayMeals'; 
+import { updateCommentCounter } from '../displayMeals';
 
 describe('updateCommentCounter function', () => {
   beforeEach(() => {

@@ -1,10 +1,10 @@
 const homeCounter = (length) => {
-    const homeIcon = document.getElementById('home-icon');
+  const homeIcon = document.getElementById('home-icon');
 
-    const counterSpan = document.createElement('span');
-    counterSpan.textContent = `(${length})`;
+  const counterSpan = document.createElement('span');
+  counterSpan.textContent = `(${length})`;
 
-    homeIcon.appendChild(counterSpan);
-}
+  homeIcon.appendChild(counterSpan);
+};
 
 export default homeCounter;
