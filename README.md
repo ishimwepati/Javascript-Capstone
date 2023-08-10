@@ -19,7 +19,7 @@
 - [📝 License](#license)
 
 
-# 📖 Javascrit Capstone Project <a name="about-project"></a>
+## Leaderboard <a name="about-project"></a>
 
 LeaderBoard app allows you to submit your score. All data is preserved using external Leaderboard API service.
 
