@@ -214,7 +214,7 @@ const showMeals = async (data) => {
 
   data.meals.forEach((item) => {
     const itemContainer = document.createElement('div');
-    itemContainer.classList.add('item')
+    itemContainer.classList.add('item');
 
     const itemImg = document.createElement('img');
     itemImg.alt = 'seafood-image';
@@ -266,7 +266,6 @@ const showMeals = async (data) => {
     });
 
     itemBox.appendChild(itemContainer);
-    
   });
   homeCounter();
 };

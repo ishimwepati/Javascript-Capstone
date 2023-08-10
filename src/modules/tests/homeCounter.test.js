@@ -12,7 +12,6 @@ document.querySelectorAll = mockQuerySelectorAll;
 
 describe('homeCounter', () => {
   test('should append a counter span with the correct text', () => {
-    // Mock the number of displayed items
     const displayedItemsCount = 10;
     mockQuerySelectorAll.mockReturnValueOnce(new Array(displayedItemsCount));
 
