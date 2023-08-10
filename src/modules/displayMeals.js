@@ -272,4 +272,4 @@ const updateCommentsSection = (newCommentsSection) => {
     }
 };
 
-export default showMeals;
+export  {showMeals,updateCommentCounter};
