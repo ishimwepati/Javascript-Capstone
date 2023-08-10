@@ -89,7 +89,7 @@ You can show your love for a meal by simply clicking a heart icon, just like sha
 
 ## 🚀 Demo Video <a name="live-demo" target="_blank"></a>
 
-- [Kindly Click Here to watch a Demonstration Video ](https://lively-scone-268aa3.netlify.app/)
+- [Kindly Click Here to watch a Demonstration Video ](https://drive.google.com/file/d/1y_M3XXV8NV0O5X7hnBSEsRWsrHlmVXei/view?usp=sharing)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
