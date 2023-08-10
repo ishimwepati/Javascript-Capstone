@@ -29,10 +29,11 @@ const showMeals = async (data) => {
         desc.textContent = item.strMeal;
 
         const heartIcon = document.createElement('i');
-        heartIcon.classList.add('far', 'fa-heart', 'heart-icon');
+        heartIcon.classList.add('far', 'fa-heart', 'heart-icon','custom-heart-class');
         heartIcon.dataset.itemId = item.idMeal;
 
         const likesElement = document.createElement('p');
+        likesElement.classList.add('likes-count');
         const matchingLike = likesData.find(like => like.item_id === item.idMeal);
         const likesCount = matchingLike ? matchingLike.likes : 0;
         likesElement.textContent = `Likes: ${likesCount}`;
@@ -95,23 +96,24 @@ const openDetailsPopup = async (mealDetails, mealId) => {
         <p>${mealDetails.strInstructions}</p>
     `;
 
-    const commentForm = createCommentForm(mealId);
-
-    closeContainer.appendChild(closeButton);
-    popup.appendChild(closeContainer);
-    popup.appendChild(mealInfo);
-    popup.appendChild(commentForm);
-
     try {
         const mealComments = await fetchCommentsForMeal(mealId);
         const commentsSection = createCommentsSection(mealComments);
-        popup.appendChild(commentsSection);
+        popup.appendChild(mealInfo);
+        popup.appendChild(commentsSection); // Move this line before the commentForm
+
+        const commentForm = createCommentForm(mealId);
+        popup.appendChild(commentForm); // Append the comment form after the commentsSection
     } catch (error) {
         console.error('Error fetching comments:', error);
     }
 
+    closeContainer.appendChild(closeButton);
+    popup.appendChild(closeContainer);
+
     document.body.appendChild(popup);
 };
+
 
 
 const fetchCommentsForMeal = async (mealId) => {
@@ -148,39 +150,46 @@ const createCommentsSection = (comments) => {
 
         const commentCounter = document.createElement('p');
             commentCounter.classList.add('comment-counter');
-            commentCounter.textContent = `Comments: ${commentCount}`;
+            commentCounter.textContent = `Number of Comments : ${commentCount}`;
 
             commentsSection.appendChild(commentCounter);
 
-    updateCommentCounter(commentCount);
+       updateCommentCounter(commentCount);
 
         reversedComments.forEach(comment => {
             const commentItem = document.createElement('li');
             commentItem.classList.add('comment');
+
+            const commentContainer = document.createElement('div'); // Create a container for the comment content
+            commentContainer.classList.add('comment-container');
 
             const commentMeta = document.createElement('div');
             commentMeta.classList.add('comment-meta');
 
             const commentAuthor = document.createElement('span');
             commentAuthor.classList.add('comment-author');
-            commentAuthor.textContent = comment.username;
+            commentAuthor.textContent = ` by ${comment.username}`;
 
             const commentDateTime = document.createElement('span');
             commentDateTime.classList.add('comment-datetime');
-            commentDateTime.textContent = comment.creation_date; 
-            
+            commentDateTime.textContent = `Posted on ${comment.creation_date}`; 
+
             commentMeta.appendChild(commentDateTime);
             commentMeta.appendChild(commentAuthor);
-            
-            const commentText = document.createElement('p');
+
+            const commentText = document.createElement('span');
             commentText.classList.add('comment-text');
             commentText.textContent = comment.comment;
 
-            commentItem.appendChild(commentMeta);
-            commentItem.appendChild(commentText);
+            commentContainer.appendChild(commentMeta);
+            commentContainer.appendChild(commentText);
+
+            commentItem.appendChild(commentContainer); // Append the container instead of individual elements
 
             commentsList.appendChild(commentItem);
         });
+
+
 
         commentsSection.appendChild(commentsList);
     } else {
@@ -202,16 +211,18 @@ const createCommentForm = (mealId) => {
     form.classList.add('comment-form');
 
     const nameLabel = document.createElement('label');
-    nameLabel.textContent = 'Your Name:';
+    nameLabel.textContent = '';
     const nameInput = document.createElement('input');
     nameInput.type = 'text';
     nameInput.name = 'user-name';
+    nameInput.placeholder = 'Enter your name';
     nameInput.required = true;
 
     const commentLabel = document.createElement('label');
-    commentLabel.textContent = 'Your Comment:';
+    commentLabel.textContent = '';
     const commentInput = document.createElement('textarea');
     commentInput.name = 'user-comment';
+    commentInput.placeholder = 'Enter your Comment';
     commentInput.required = true;
 
     const submitButton = document.createElement('button');
