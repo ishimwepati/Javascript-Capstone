@@ -1,6 +1,7 @@
 import getMealDetails from './getMealDetails';
 import addLike from './addLikes';
 import getLikes from './getLikes';
+import homeCounter from './homeCounter';
 
 const appId = 'tQwE3IU59z3JaJmDVQ7q';
 
@@ -213,6 +214,7 @@ const showMeals = async (data) => {
 
   data.meals.forEach((item) => {
     const itemContainer = document.createElement('div');
+    itemContainer.classList.add('item')
 
     const itemImg = document.createElement('img');
     itemImg.alt = 'seafood-image';
@@ -264,7 +266,9 @@ const showMeals = async (data) => {
     });
 
     itemBox.appendChild(itemContainer);
+    
   });
+  homeCounter();
 };
 
 export { showMeals, updateCommentCounter };
