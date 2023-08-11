@@ -3,7 +3,6 @@ import addLike from "./addLikes";
 import getLikes from "./getLikes";
 const app_id = 'tQwE3IU59z3JaJmDVQ7q';
 
-
 const updateCommentCounter = (commentCount) => {
     const commentCounter = document.querySelector('.comment-counter');
 
@@ -115,26 +114,6 @@ const openDetailsPopup = async (mealDetails, mealId) => {
 };
 
 
-
-const fetchCommentsForMeal = async (mealId) => {
-    const apiUrl = `https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/VT6MgkCI6GHRm8y0ZkMt/comments?item_id=${mealId}`;
-
-    try {
-        const response = await fetch(apiUrl);
-
-        if (!response.ok) {
-            console.error('Error response:', response.status, await response.text());
-            
-            return [];
-        }
-
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Error fetching comments:', error);
-        throw error;
-    }
-};
 
 const createCommentsSection = (comments) => {
     const commentsSection = document.createElement('div');
