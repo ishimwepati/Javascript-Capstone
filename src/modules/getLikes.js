@@ -1,6 +1,6 @@
-const getMeals = async () => {
+const getLikes = async () => {
   try {
-    const response = await fetch('https://www.themealdb.com/api/json/v1/1/filter.php?c=Seafood');
+    const response = await fetch('https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/tQwE3IU59z3JaJmDVQ7q/likes');
 
     if (!response.ok) {
       throw new Error('Network response was not ok');
@@ -14,4 +14,4 @@ const getMeals = async () => {
   }
 };
 
-export default getMeals;
+export default getLikes;

@@ -32,8 +32,6 @@
 - [❓ FAQ (OPTIONAL)](#faq)
 - [📝 License](#license)
 
-<!-- INTRO -->
-# 📖 LeaderBoard <a name="about-project"></a>
 
 > The Restaurant Meal Showcase Web App as our Javascript Capstone Project is like a delightful adventure where you can discover a wide array of scrumptious restaurant meals. Imagine a place with a charming and easy-to-use design that lets you effortlessly browse through different dishes. 
 
@@ -85,11 +83,13 @@ You can show your love for a meal by simply clicking a heart icon, just like sha
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- LIVE DEMO -->
 
 ## 🚀 Demo Video <a name="live-demo" target="_blank"></a>
 
-- [Kindly Click Here to watch a Demonstration Video ](https://lively-scone-268aa3.netlify.app/)
+## 🚀 Live Demo <a name="live-demo"></a>
+
+
+- will be available soon!
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
